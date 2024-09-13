@@ -1,5 +1,5 @@
 <h1 align="center">Hi 👋, I'm Umit Tasdelen</h1>
-<h3 align="center">A general developer from Turkey</h3>
+<h3 align="center">A developer from Turkey</h3>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=umittadelen&label=Profile%20views&color=000000&style=flat" alt="umittadelen" /> </p>
 
