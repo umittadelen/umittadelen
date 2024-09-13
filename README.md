@@ -1,9 +1,7 @@
-<h1 align="center">Hi 👋, I'm Umit Tasdelen</h1>
+[<h1 align="center">Hi 👋, I'm Umit Tasdelen</h1>
 <h3 align="center">A general developer from Turkey</h3>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=umittadelen&label=Profile%20views&color=000000&style=flat" alt="umittadelen" /> </p>
-
-<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=umittadelen" alt="umittadelen" /></a> </p>
 
 - 🔭 I’m currently working on [chromaconsole](https://pypi.org/project/chromaconsole/)
 
@@ -29,3 +27,4 @@
 <p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=umittadelen&show_icons=true&theme=dark&locale=en" alt="umittadelen" /></p>
 
 <p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=umittadelen&theme=dark" alt="umittadelen" /></p>
+](https://theballooncompany.com/produktkategori/ballongdekor/ballongbuer-ballongdekor/)
