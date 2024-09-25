@@ -26,4 +26,6 @@
 
 <p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=umittadelen&show_icons=true&theme=dark&locale=en" alt="umittadelen" /></p>
 
+<img align="center" src="https://github-profile-trophy.vercel.app/?username=umittadelen&theme=dark"/>
+
 <p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=umittadelen&theme=dark" alt="umittadelen" /></p>
