@@ -3,6 +3,8 @@
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=umittadelen&label=Profile%20views&color=000000&style=flat" alt="umittadelen" /> </p>
 
+- 📎 This is a real account (do not mind the PFP)
+
 - 🔭 I’m currently working on [chromaconsole](https://pypi.org/project/chromaconsole/)
 
 - 👨‍💻 Most of my projects are available at [https://umittadelen.github.io/aboutMe/](https://umittadelen.github.io/aboutMe/)
