@@ -7,7 +7,7 @@
 
 - 👨‍💻 Most of my projects are available at [https://umittadelen.github.io/aboutMe/](https://umittadelen.github.io/aboutMe/)
 
-- 📫 How to reach me **umittadelen1772@gmail.com**
+- 📫 How to reach me **umittadelen1772@gmail.com** or **umittadelen1277@gmail.com**
 
 - 📄 Know about my experiences [https://umittadelen.github.io/aboutMe/](https://umittadelen.github.io/aboutMe/)
 
