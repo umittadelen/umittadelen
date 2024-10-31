@@ -1,9 +1,9 @@
-<h1 align="center">Hi 👋, I'm Umit Tasdelen</h1>
+![image](https://github.com/user-attachments/assets/e3a21452-b5ca-4625-9481-892120f8041b)<h1 align="center">Hi 👋, I'm Umit Tasdelen</h1>
 <h3 align="center">A developer from Turkey</h3>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=umittadelen&label=Profile%20views&color=000000&style=flat" alt="umittadelen" /> </p>
 
-- 🔭 I’m currently working on [chromaconsole](https://pypi.org/project/chromaconsole/)
+- 🔭 I’m currently working on [TextToImage](https://github.com/umittadelen/TextToImage)
 
 - 👨‍💻 Most of my projects are available at [https://umittadelen.github.io/aboutMe/](https://umittadelen.github.io/aboutMe/)
 
