@@ -9,7 +9,7 @@
 
 - 📫 How to reach me **umittadelen1772@gmail.com** or **umittadelen1277@gmail.com**
 
-- 📄 Know about my experiences [https://umittadelen.github.io/aboutMe/](https://umittadelen.github.io/aboutMe/)
+- 📄 More About Me [https://umittadelen.net](https://umittadelen.net)
 
 <img src="https://media.tenor.com/cztX9DCxbl4AAAAi/cat-cats.gif" width="100" height="15" /><img src="https://media.tenor.com/cztX9DCxbl4AAAAi/cat-cats.gif" width="100" height="15" /><img src="https://media.tenor.com/cztX9DCxbl4AAAAi/cat-cats.gif" width="100" height="15" /><img src="https://media.tenor.com/cztX9DCxbl4AAAAi/cat-cats.gif" width="100" height="15" />
 <h3 align="left">Connect with me:</h3>
