@@ -3,7 +3,7 @@
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=umittadelen&label=Profile%20views&color=000000&style=flat" alt="umittadelen" /> </p>
 
-- 🔭 I’m currently working on [easyUI](https://github.com/umittadelen/easyUI)
+- 🔭 I’m currently working on [easyUI](https://github.com/umittadelen/stableDiffusionEasyUI)
 
 - 👨‍💻 Most of my projects are available at [https://umittadelen.github.io/aboutMe/](https://umittadelen.github.io/aboutMe/)
 
