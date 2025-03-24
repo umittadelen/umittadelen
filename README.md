@@ -1,8 +1,9 @@
 <h1 align="center">Hi 👋, I'm Umit Tasdelen</h1>
 <hr>
-<h3 align="center">A developer from Turkey</h3>
 
-- 🔭 I’m currently working on [easyUI](https://github.com/umittadelen/stableDiffusionEasyUI)
+- 🔭 I'm currently working on [easyUI](https://github.com/umittadelen/stableDiffusionEasyUI)
+
+- 📖 I'm currently learning **three.js**
 
 - 👨‍💻 Most of my projects are available at [https://umittadelen.github.io/aboutMe/](https://umittadelen.github.io/aboutMe/)
 
