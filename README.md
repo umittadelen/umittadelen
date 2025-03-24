@@ -1,4 +1,4 @@
-<p align="center" style="font-size:large;">Hi 👋, I'm Umit Tasdelen</p>
+<span align="center" style="font-size:large;">Hi 👋, I'm Umit Tasdelen</span>
 <hr>
 <h3 align="center">A developer from Turkey</h3>
 
