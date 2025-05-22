@@ -2,7 +2,7 @@
 
 <hr>
 
-- 🔭 I'm currently working on [easyUI](https://github.com/umittadelen/stableDiffusionEasyUI)
+- 🔭 I'm currently working on [CardsMod](https://github.com/umittadelen/CardsMod)
 
 - 📖 I'm currently learning **three.js**
 
