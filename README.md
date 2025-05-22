@@ -4,7 +4,7 @@
 
 - 🔭 I'm currently working on [CardsMod](https://github.com/umittadelen/CardsMod)
 
-- 📖 I'm currently learning **three.js**
+- 📖 I'm currently learning **java/fabric**
 
 - 👨‍💻 Most of my projects are available at [https://umittadelen.github.io/aboutMe/](https://umittadelen.github.io/aboutMe/)
 
