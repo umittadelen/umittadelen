@@ -6,8 +6,6 @@
 
 - 📖 I'm currently learning **java/fabric**
 
-- 👨‍💻 Most of my projects are available at [https://umittadelen.github.io/aboutMe/](https://umittadelen.github.io/aboutMe/)
-
 - 📫 How to reach me **umittadelen1772@gmail.com** or **umittadelen1277@gmail.com**
 
 - 📄 More About Me [https://umittadelen.net](https://umittadelen.net)
