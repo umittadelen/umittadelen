@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/umittadelen/umittadelen/main/hitori.gif" alt="hitori lag" width="75%">
+  <img src="https://raw.githubusercontent.com/umittadelen/umittadelen/main/hitori.gif" alt="hitori lag" width="50%">
 </p>
 
 <h1 align="center">Hi, I'm Umit 😸</h1>
