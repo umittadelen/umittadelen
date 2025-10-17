@@ -46,22 +46,3 @@
 </p>
 
 ---
-
-### ✨ Guestbook
-<div align="center">
-  <h4>Leave a cool message for me or just say hi! Simply click the button below! 👇</h4>
-  <a href="https://github.com/umittadelen/umittadelen/issues/new?assignees=&labels=guestbook&projects=&template=guestbook-entry.yml&title=%E2%9C%8D%EF%B8%8F+New+Guestbook+Entry">
-    <img src="https://img.shields.io/badge/✨_Sign_My_Guestbook-FFB6C1?style=for-the-badge&logoColor=white&labelColor=black"/>
-  </a>
-</div>
-<!-- GUESTBOOK-LIST:START -->
-
-## ✨ Recent Guestbook Entries
-
-> 📝 Be the first to sign my guestbook!
-
-### ✍️ Leave your message!
-
-[![Sign Guestbook](https://img.shields.io/badge/✨_Sign_Guestbook-FFB6C1?style=for-the-badge&logoColor=white&labelColor=black)](https://github.com/umittadelen/umittadelen/issues/new?assignees=&labels=guestbook&template=guestbook-entry.yml&title=✍%EF%B8%8F+New+Guestbook+Entry)
-
-<!-- GUESTBOOK-LIST:END -->
