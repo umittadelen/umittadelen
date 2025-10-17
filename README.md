@@ -59,6 +59,11 @@
 <summary>📖 View Guestbook</summary>
 
 <!-- GUESTBOOK-LIST:START -->
+
+| From | Message |
+|------|---------|
+| 📝 | Be the first to sign! |
+
 <!-- GUESTBOOK-LIST:END -->
 
 </details>
