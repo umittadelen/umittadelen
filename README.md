@@ -54,5 +54,14 @@
     <img src="https://img.shields.io/badge/✨_Sign_My_Guestbook-FFB6C1?style=for-the-badge&logoColor=white&labelColor=black"/>
   </a>
 </div>
-<!-- Guestbook -->
-<!-- /Guestbook -->
+<!-- GUESTBOOK-LIST:START -->
+
+## ✨ Recent Guestbook Entries
+
+> 📝 Be the first to sign my guestbook!
+
+### ✍️ Leave your message!
+
+[![Sign Guestbook](https://img.shields.io/badge/✨_Sign_Guestbook-FFB6C1?style=for-the-badge&logoColor=white&labelColor=black)](https://github.com/umittadelen/umittadelen/issues/new?assignees=&labels=guestbook&template=guestbook-entry.yml&title=✍%EF%B8%8F+New+Guestbook+Entry)
+
+<!-- GUESTBOOK-LIST:END -->
