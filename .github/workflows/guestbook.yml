@@ -1,160 +1,140 @@
-name: Guestbook Update
+name: ✨ Guestbook
+
 on:
   issues:
-    types: [opened, edited, deleted, labeled]
+    types: [opened, edited, labeled, closed, reopened]
   workflow_dispatch:
+  discussion:
+    types: [created, edited, deleted]
+  discussion_comment:
+    types: [created, edited, deleted]
+
+permissions:
+  contents: write
+  issues: write
+  discussions: read
 
 jobs:
   update-guestbook:
     runs-on: ubuntu-latest
-    if: |
-      (github.event_name == 'workflow_dispatch') ||
-      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'guestbook'))
-    permissions:
-      contents: write
-      issues: write
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
         with:
-          node-version: '16'
-
-      - name: Install dependencies
-        run: npm install markdown-it
-
-      - name: Update Guestbook
-        uses: actions/github-script@v6
+          fetch-depth: 1
+      
+      - name: 🔄 Update Guestbook
+        uses: actions/github-script@v7
         with:
           script: |
-            const fs = require('fs');
-            const path = require('path');
-            const MarkdownIt = require('markdown-it');
+            const fs = require('fs').promises;
             
-            // Initialize markdown-it with specific options
-            const md = new MarkdownIt({
-              html: false,        // Disable HTML tags
-              breaks: true,       // Convert '\n' to <br>
-              linkify: true,      // Convert URLs to links
-              typographer: true   // Enable smart quotes and other typographic replacements
-            });
-
-            // Custom function to sanitize content while preserving GIFs
-            function sanitizeContent(content) {
-              // Remove HTML tags except for GIF images
-              content = content.replace(/<(?!img src="[^"]+\.gif"[^>]*>)[^>]+>/gi, '');
-              // Only allow GIF images, remove other image tags
-              content = content.replace(/<img[^>]+src="([^"]+\.(?!gif)[^"]+)"[^>]*>/gi, '');
+            // Helper function to format date
+            function formatDate(date) {
+              return new Date(date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              });
+            }
+            
+            // Get all guestbook entries
+            async function getGuestbookEntries() {
+              const entries = [];
+              
+              // Get issues with guestbook label
+              const issues = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'all',
+                labels: 'guestbook',
+                per_page: 100,
+                sort: 'created',
+                direction: 'desc'
+              });
+              
+              // Process each issue
+              for (const issue of issues.data) {
+                const message = issue.body
+                  .replace(/### (.*?)\r?\n/g, '') // Remove headers
+                  .replace(/\r?\n/g, '<br>')         // Replace newlines with spaces
+                  .trim();
+                  
+                if (message) {
+                  entries.push({
+                    author: issue.user.login,
+                    avatar: issue.user.avatar_url,
+                    message: message,
+                    date: formatDate(issue.created_at),
+                    url: issue.html_url
+                  });
+                }
+              }
+              
+              return entries;
+            }
+            
+            // Generate guestbook markdown
+            async function generateGuestbook(entries) {
+              let content = '<!-- GUESTBOOK-LIST:START -->\n\n';
+              content += '## ✨ Recent Guestbook Entries\n\n';
+              
+              if (entries.length === 0) {
+                content += '> 📝 Be the first to sign my guestbook!\n';
+              } else {
+                content += '| Guest | Date | Message |\n';
+                content += '|:------|:-----|:--------|\n';
+                
+                for (const entry of entries.slice(0, 10)) {
+                  const message = entry.message
+                    .replace(/\|/g, '\\|')           // Escape table separators
+                    .replace(/\[(.*?)\]/g, '\\[$1\\]') // Escape markdown links
+                    .substring(0, 200);              // Limit length
+                    
+                  content += `| [![${entry.author}](${entry.avatar}&s=24)](${entry.url}) [@${entry.author}](https://github.com/${entry.author}) | ${entry.date} | ${message} |\n`;
+                }
+              }
+              
+              content += '\n### ✍️ Leave your message!\n\n';
+              content += `[![Sign Guestbook](https://img.shields.io/badge/✨_Sign_Guestbook-FFB6C1?style=for-the-badge&logoColor=white&labelColor=black)](https://github.com/${context.repo.owner}/${context.repo.repo}/issues/new?assignees=&labels=guestbook&template=guestbook-entry.yml&title=✍%EF%B8%8F+New+Guestbook+Entry)\n\n`;
+              content += '<!-- GUESTBOOK-LIST:END -->';
+              
               return content;
             }
             
-            // Function to safely get issues with retry
-            async function getGuestbookIssues(retries = 3) {
-              for (let i = 0; i < retries; i++) {
-                try {
-                  const issues = await github.rest.issues.listForRepo({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    state: 'all',
-                    labels: 'guestbook',
-                    per_page: 100  // Get more issues per request
-                  });
-                  return issues;
-                } catch (error) {
-                  if (i === retries - 1) throw error;
-                  await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
-                }
-              }
-            }
-
-            // Get all guestbook issues
-            const issues = await getGuestbookIssues();
-            
-            // Sort issues by creation date (newest first)
-            const entries = issues.data
-              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-              .slice(0, 5); // Keep only the 5 most recent entries
-            
-            // Generate the guestbook markdown
-            let guestbookContent = '<!-- GUESTBOOK-LIST:START -->\n\n';
-            guestbookContent += '## ✨ Recent Guestbook Entries\n\n';
-            guestbookContent += '| Visitor | Message |\n';
-            guestbookContent += '|:--------|:---------|';
-            
-            for (const issue of entries) {
-              const body = issue.body || '';
-              const username = issue.user.login;
-              
-              // Extract message more flexibly - take all content after "### Message"
-              let message = body.split(/### Message\s*/)?.[1]?.trim() || body.trim() || '';
-              
-              // Sanitize and render markdown
-              message = sanitizeContent(message);
-              message = md.render(message);
-              
-              // Clean up rendered HTML and escape table separators
-              message = message.trim()
-                .replace(/^\s*<p>(.*)<\/p>\s*$/s, '$1') // Remove wrapping <p> tags
-                .replace(/\|/g, '\\|')                   // Escape table separators
-                .replace(/\n/g, ' ');                    // Convert newlines to spaces
-              
-              // Add emoji based on the type of content
-              const hasEmoji = /:[a-zA-Z0-9_+-]+:/g.test(message);
-              const hasGif = /<img.*?\.gif/i.test(message);
-              const messageEmoji = hasGif ? '🎭' : (hasEmoji ? '😊' : '✍️');
-              
-              guestbookContent += `\n| ${messageEmoji} [@${username}](https://github.com/${username}) | ${message} |`;
-            }
-            
-            if (entries.length === 0) {
-              guestbookContent += '\n| 📝 | [Be the first to sign my guestbook!](https://github.com/umittadelen/umittadelen/issues/new?title=Guestbook+Entry&labels=guestbook&body=### Message%0A) |';
-            }
-            
-            // Add a link to sign the guestbook
-            guestbookContent += '\n\n';
-            guestbookContent += '### ✍️ Sign my guestbook\n\n';
-            guestbookContent += '✨ [Add your message here](https://github.com/umittadelen/umittadelen/issues/new?title=Guestbook+Entry&labels=guestbook&body=### Message%0A)\n\n';
-            guestbookContent += '<!-- GUESTBOOK-LIST:END -->';
-            
-            // Safely read the README file
-            let readme;
-            const readmePath = 'README.md';
             try {
-              readme = fs.readFileSync(readmePath, 'utf8');
-              if (!readme.includes('GUESTBOOK-LIST:START') || !readme.includes('GUESTBOOK-LIST:END')) {
-                throw new Error('README.md is missing guestbook markers');
-              }
+              // Read README
+              const readmePath = 'README.md';
+              let readme = await fs.readFile(readmePath, 'utf8');
+              
+              // Get guestbook entries
+              const entries = await getGuestbookEntries();
+              
+              // Generate new guestbook content
+              const newContent = await generateGuestbook(entries);
+              
+              // Update README
+              readme = readme.replace(
+                /<!-- GUESTBOOK-LIST:START -->[\s\S]*<!-- GUESTBOOK-LIST:END -->/,
+                newContent
+              );
+              
+              // Save changes
+              await fs.writeFile(readmePath, readme);
+              
+              // Log success
+              console.log('✅ Guestbook updated successfully!');
+              
             } catch (error) {
-              console.error(`Error reading ${readmePath}:`, error.message);
-              core.setFailed(`Failed to read ${readmePath}: ${error.message}`);
-              return;
-            
-            // Replace the guestbook section
-            readme = readme.replace(
-              /<!-- GUESTBOOK-LIST:START -->[\s\S]*<!-- GUESTBOOK-LIST:END -->/,
-              guestbookContent
-            );
-            
-            // Write the updated README
-            fs.writeFileSync(readmePath, readme);
-            
-            // Commit the changes
-            await exec.exec('git', ['config', '--global', 'user.email', 'action@github.com']);
-            await exec.exec('git', ['config', '--global', 'user.name', 'GitHub Action']);
-            await exec.exec('git', ['add', readmePath]);
-            await exec.exec('git', ['commit', '-m', 'Update guestbook']);
-            await exec.exec('git', ['push']);
-
-      - name: Close Issue
-        if: github.event.action == 'opened' || github.event.action == 'edited'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            await github.rest.issues.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              state: 'closed'
-            });
+              console.error('❌ Error updating guestbook:', error);
+              core.setFailed(error.message);
+            }
+      
+      - name: 🚀 Commit and Push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md
+          git diff --staged --quiet || git commit -m '✨ Update guestbook'
+          git push

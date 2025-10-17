@@ -3,19 +3,6 @@ description: Sign my guestbook by leaving a message!
 title: "✍️ New Guestbook Entry"
 labels: ["guestbook"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        ## Thanks for signing my guestbook! 📖
-        Feel free to leave a friendly message, share what brought you here, or just say hi!
-
-        ### You can use:
-        - **Bold** text with `**text**`
-        - *Italic* text with `*text*`
-        - � Emojis like `:target:`
-        - Links like `[text](url)`
-        - GIF images: `<img src="https://media.giphy.com/media/your-gif-id/giphy.gif" />`
-
   - type: textarea
     id: message
     attributes:
@@ -28,14 +15,3 @@ body:
       render: markdown
     validations:
       required: true
-
-  - type: checkboxes
-    id: confirmation
-    attributes:
-      label: ✅ Confirmation
-      description: Please confirm the following
-      options:
-        - label: I understand that my message will be displayed publicly in the guestbook
-          required: true
-        - label: My message is appropriate and does not contain any harmful content
-          required: true
