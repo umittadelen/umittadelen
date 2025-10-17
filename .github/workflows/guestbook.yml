@@ -1,12 +1,15 @@
 name: Guestbook Update
 on:
   issues:
-    types: [opened, edited, deleted]
+    types: [opened, edited, deleted, labeled]
   workflow_dispatch:
 
 jobs:
   update-guestbook:
     runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'workflow_dispatch') ||
+      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'guestbook'))
     permissions:
       contents: write
       issues: write
@@ -47,13 +50,27 @@ jobs:
               return content;
             }
             
+            // Function to safely get issues with retry
+            async function getGuestbookIssues(retries = 3) {
+              for (let i = 0; i < retries; i++) {
+                try {
+                  const issues = await github.rest.issues.listForRepo({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    state: 'all',
+                    labels: 'guestbook',
+                    per_page: 100  // Get more issues per request
+                  });
+                  return issues;
+                } catch (error) {
+                  if (i === retries - 1) throw error;
+                  await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+                }
+              }
+            }
+
             // Get all guestbook issues
-            const issues = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              labels: 'guestbook'
-            });
+            const issues = await getGuestbookIssues();
             
             // Sort issues by creation date (newest first)
             const entries = issues.data
@@ -62,35 +79,57 @@ jobs:
             
             // Generate the guestbook markdown
             let guestbookContent = '<!-- GUESTBOOK-LIST:START -->\n\n';
-            guestbookContent += '| From | Message |\n';
-            guestbookContent += '|------|---------|';
+            guestbookContent += '## ✨ Recent Guestbook Entries\n\n';
+            guestbookContent += '| Visitor | Message |\n';
+            guestbookContent += '|:--------|:---------|';
             
             for (const issue of entries) {
-              const body = issue.body;
+              const body = issue.body || '';
               const username = issue.user.login;
-              let message = body.match(/### Message\s*([^\n]+)/)?.[1]?.trim() || '';
+              
+              // Extract message more flexibly - take all content after "### Message"
+              let message = body.split(/### Message\s*/)?.[1]?.trim() || body.trim() || '';
               
               // Sanitize and render markdown
               message = sanitizeContent(message);
               message = md.render(message);
               
               // Clean up rendered HTML and escape table separators
-              message = message.trim().replace(/^\s*<p>(.*)<\/p>\s*$/, '$1');
-              message = message.replace(/\|/g, '\\|');
+              message = message.trim()
+                .replace(/^\s*<p>(.*)<\/p>\s*$/s, '$1') // Remove wrapping <p> tags
+                .replace(/\|/g, '\\|')                   // Escape table separators
+                .replace(/\n/g, ' ');                    // Convert newlines to spaces
               
-              guestbookContent += `\n| [@${username}](https://github.com/${username}) | ${message} |`;
+              // Add emoji based on the type of content
+              const hasEmoji = /:[a-zA-Z0-9_+-]+:/g.test(message);
+              const hasGif = /<img.*?\.gif/i.test(message);
+              const messageEmoji = hasGif ? '🎭' : (hasEmoji ? '😊' : '✍️');
+              
+              guestbookContent += `\n| ${messageEmoji} [@${username}](https://github.com/${username}) | ${message} |`;
             }
             
             if (entries.length === 0) {
-              guestbookContent += '\n| 📝 | Be the first to sign! |';
+              guestbookContent += '\n| 📝 | [Be the first to sign my guestbook!](https://github.com/umittadelen/umittadelen/issues/new?title=Guestbook+Entry&labels=guestbook&body=### Message%0A) |';
             }
             
+            // Add a link to sign the guestbook
             guestbookContent += '\n\n';
+            guestbookContent += '### ✍️ Sign my guestbook\n\n';
+            guestbookContent += '✨ [Add your message here](https://github.com/umittadelen/umittadelen/issues/new?title=Guestbook+Entry&labels=guestbook&body=### Message%0A)\n\n';
             guestbookContent += '<!-- GUESTBOOK-LIST:END -->';
             
-            // Read the current README
+            // Safely read the README file
+            let readme;
             const readmePath = 'README.md';
-            let readme = fs.readFileSync(readmePath, 'utf8');
+            try {
+              readme = fs.readFileSync(readmePath, 'utf8');
+              if (!readme.includes('GUESTBOOK-LIST:START') || !readme.includes('GUESTBOOK-LIST:END')) {
+                throw new Error('README.md is missing guestbook markers');
+              }
+            } catch (error) {
+              console.error(`Error reading ${readmePath}:`, error.message);
+              core.setFailed(`Failed to read ${readmePath}: ${error.message}`);
+              return;
             
             // Replace the guestbook section
             readme = readme.replace(
