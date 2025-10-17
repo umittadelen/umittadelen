@@ -1,0 +1,91 @@
+name: Guestbook Update
+on:
+  issues:
+    types: [opened, edited, deleted]
+  workflow_dispatch:
+
+jobs:
+  update-guestbook:
+    runs-on: ubuntu-latest
+    if: github.event.issue.labels.*.name contains 'guestbook'
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Update Guestbook
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Get all guestbook issues
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'guestbook'
+            });
+            
+            // Sort issues by creation date (newest first)
+            const entries = issues.data
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .slice(0, 5); // Keep only the 5 most recent entries
+            
+            // Generate the guestbook markdown
+            let guestbookContent = '<!-- GUESTBOOK-LIST:START -->\n\n';
+            guestbookContent += '| From | Message |\n';
+            guestbookContent += '|------|---------|';
+            
+            for (const issue of entries) {
+              const body = issue.body;
+              const username = issue.user.login;
+              const message = body.match(/### Message\s*([^\n]+)/)?.[1]?.trim() || '';
+              
+              // Escape any | characters in the message to prevent breaking the table
+              const escapedMessage = message.replace(/\|/g, '\\|');
+              
+              guestbookContent += `\n| [@${username}](https://github.com/${username}) | ${escapedMessage} |`;
+            }
+            
+            if (entries.length === 0) {
+              guestbookContent += '\n| 📝 | Be the first to sign! |';
+            }
+            
+            guestbookContent += '\n\n';
+            guestbookContent += '<!-- GUESTBOOK-LIST:END -->';
+            
+            // Read the current README
+            const readmePath = 'github aboutme.md';
+            let readme = fs.readFileSync(readmePath, 'utf8');
+            
+            // Replace the guestbook section
+            readme = readme.replace(
+              /<!-- GUESTBOOK-LIST:START -->[\s\S]*<!-- GUESTBOOK-LIST:END -->/,
+              guestbookContent
+            );
+            
+            // Write the updated README
+            fs.writeFileSync(readmePath, readme);
+            
+            // Commit the changes
+            await exec.exec('git', ['config', '--global', 'user.email', 'action@github.com']);
+            await exec.exec('git', ['config', '--global', 'user.name', 'GitHub Action']);
+            await exec.exec('git', ['add', readmePath]);
+            await exec.exec('git', ['commit', '-m', 'Update guestbook']);
+            await exec.exec('git', ['push']);
+
+      - name: Close Issue
+        if: github.event.action == 'opened' || github.event.action == 'edited'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed'
+            });
