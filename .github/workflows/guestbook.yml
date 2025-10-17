@@ -7,7 +7,6 @@ on:
 jobs:
   update-guestbook:
     runs-on: ubuntu-latest
-    if: contains(github.event.issue.labels.*.name, 'guestbook')
     permissions:
       contents: write
       issues: write
@@ -90,7 +89,7 @@ jobs:
             guestbookContent += '<!-- GUESTBOOK-LIST:END -->';
             
             // Read the current README
-            const readmePath = 'github aboutme.md';
+            const readmePath = 'README.md';
             let readme = fs.readFileSync(readmePath, 'utf8');
             
             // Replace the guestbook section
