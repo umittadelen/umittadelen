@@ -15,7 +15,7 @@
 - 📖 Currently learning: **Java / Marlin**  
 - 📫 Reach me at: **umittadelen1772@gmail.com** or **umittadelen1277@gmail.com**  
 - 📄 More about me: [umittadelen.net](https://umittadelen.net)  
-
+- 🎨 Favorite colors: `#C1FFD7`, `#FFB6C1`, `#D346F2`, `#F246A2`
 ---
 
 ### 🛠 Tech & Tools I Use
