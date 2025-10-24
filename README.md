@@ -44,5 +44,3 @@
 <p align="center">
   🌸 Made with 💖, ☕, and a little bit of magic ✨
 </p>
-
----
