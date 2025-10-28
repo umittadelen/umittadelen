@@ -18,7 +18,6 @@
 - 🎨 Favorite colors:
   - ![#c1ffd7](https://placehold.co/15x15/c1ffd7/c1ffd7.png) `#c1ffd7`
   - ![#ffb6c1](https://placehold.co/15x15/ffb6c1/ffb6c1.png) `#ffb6c1`
-  - ![#d346f2](https://placehold.co/15x15/d346f2/d346f2.png) `#d346f2`
   - ![#f246a2](https://placehold.co/15x15/f246a2/f246a2.png) `#f246a2`
 ---
 
