@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <b>17 y/o Programmer & 3D Designer</b><br>
+  <b>18 y/o Programmer & 3D Designer</b><br>
   I love <b>coding</b>, creating <b>free/opensource stuff</b>, and experimenting with <b>fun ideas</b> 💡<br>
   <i>I sometimes break things on my PC</i> (in a good way).
 </p>
