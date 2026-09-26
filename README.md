@@ -11,7 +11,7 @@
 ---
 
 ### 🌱 About Me
-- 🎓 Studying on: **VG1 (High School Year 1)**
+- 🎓 Studying on: **VG2 (High School Year 1)**
 - 📖 Currently learning: **Java / Marlin**  
 - 📫 Reach me at: **umittadelen1772@gmail.com** or **umittadelen1277@gmail.com**  
 - 📄 More about me: [umittadelen.net](https://umittadelen.net)  
